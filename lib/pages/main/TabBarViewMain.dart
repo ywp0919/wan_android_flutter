@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:WanAndroid/pages/home/HomePage.dart';
 import 'package:WanAndroid/pages/knowledge/KnowledgePage.dart';
+import 'package:WanAndroid/pages/main/MainDrawerPage.dart';
 
 /// 这是一个点击TabItem进行切换显示的风格的主页。
 class TabBarViewMain extends StatefulWidget {
@@ -63,9 +64,6 @@ class TabBarViewMainState extends State<TabBarViewMain>
     );
 
     return MaterialApp(
-      //主题设置
-      theme: ThemeData(primaryColor: Colors.green),
-      //脚手架
       home: Scaffold(
         // 顶部 appBar
         appBar: AppBar(
@@ -90,6 +88,8 @@ class TabBarViewMainState extends State<TabBarViewMain>
         ),
         // body 放 pager，主要是用来切换的这几个页面
         body: _body,
+        // 侧滑页面
+        drawer: MainDrawerPage(),
       ),
     );
   }
