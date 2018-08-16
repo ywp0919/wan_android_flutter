@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:WanAndroid/pages/main/IndexedStackMain.dart';
-import 'package:WanAndroid/pages/main/TabBarViewMain.dart';
+import 'package:WanAndroid/pages/main/MainApp.dart';
 
-///  可以在这里切换加载不一样风格的首页。
-///  一个是左右滑动的ViewPager样式的。
-///  一个是点击ItemBar切换显示样式的。
-void main() => runApp(IndexedStackMain());
-//void main() => runApp(TabBarViewMain());
+/// 这里直接用MaterialApp包裹，后面有用到Navigator.push的时候context要求把Scaffold独立出widget出来
+void main() => runApp(MaterialApp(
+      //主题设置
+      theme: ThemeData(primaryColor: Colors.green),
+      home: MainApp(),
+    ));
