@@ -84,6 +84,7 @@ class TabBarViewMainState extends State<TabBarViewMain>
           onTap: (index) {
             setState(() {
               _currentBottomIndex = index;
+              _tabController.index = index;
             });
           },
         ),

@@ -11,8 +11,12 @@ class MainApp extends StatefulWidget {
 }
 
 class MainAppState extends State<MainApp> {
+  // 这里使用 Scaffold
+  final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) => Scaffold(
+        key: _scaffoldState,
         appBar: AppBar(
             title: Text(
               "请选择一种主页风格",
@@ -26,10 +30,13 @@ class MainAppState extends State<MainApp> {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
+                  // 跳转，这里一定要根Widget是Scaffold才能使用这个context，不知道是为什么 ？
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => IndexedStackMain()));
+//                  _scaffoldState.currentState
+//                      .showSnackBar(SnackBar(content: Text("进入不可以左右滑动的主页")));
                 },
                 child: Container(
                   width: 200.0,
@@ -53,9 +60,8 @@ class MainAppState extends State<MainApp> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => TabBarViewMain()));
-                  Scaffold
-                      .of(context)
-                      .showSnackBar(SnackBar(content: Text("进入可以左右滑动的主页")));
+//                  _scaffoldState.currentState
+//                      .showSnackBar(SnackBar(content: Text("进入可以左右滑动的主页")));
                 },
                 child: Container(
                   width: 200.0,
