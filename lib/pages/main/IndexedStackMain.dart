@@ -45,6 +45,8 @@ class IndexedStackMainState extends State<IndexedStackMain> {
     );
 
     return MaterialApp(
+      //主题设置
+      theme: ThemeData(primaryColor: Colors.green),
       home: Scaffold(
         // 顶部 appBar
         appBar: AppBar(
@@ -69,7 +71,7 @@ class IndexedStackMainState extends State<IndexedStackMain> {
         // body 放 pager，主要是用来切换的这几个页面
         body: _body,
         // 侧滑页面
-        drawer:MainDrawerPage(),
+        drawer: MainDrawerPage(),
       ),
     );
   }

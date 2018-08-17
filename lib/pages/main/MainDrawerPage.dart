@@ -10,15 +10,26 @@ class MainDrawerPageState extends State<MainDrawerPage> {
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
-      constraints:BoxConstraints(maxWidth: 280.0),
+      constraints: BoxConstraints(maxWidth: 300.0),
       child: Container(
-        width: 300.0,
         color: Colors.white,
         child: ListView(
           children: <Widget>[
             Stack(
               children: <Widget>[
-                Image.asset("images/icon_bottom_main_checked.png")
+                Container(
+                  width: 300.0,
+                  height: 200.0,
+                  color: Colors.blue,
+                  child: Stack(
+                    children: <Widget>[
+                      Text(
+                        "我是隔壁的泰山",
+                        style: TextStyle(color: Colors.white, fontSize: 18.0),
+                      )
+                    ],
+                  ),
+                )
               ],
             )
           ],

@@ -64,6 +64,8 @@ class TabBarViewMainState extends State<TabBarViewMain>
     );
 
     return MaterialApp(
+      //主题设置
+      theme: ThemeData(primaryColor: Colors.green),
       home: Scaffold(
         // 顶部 appBar
         appBar: AppBar(
