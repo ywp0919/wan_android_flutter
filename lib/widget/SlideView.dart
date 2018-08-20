@@ -43,9 +43,7 @@ class SlideViewState extends State<SlideView>
             onTap: () {
               _handOnItemClick(item);
             },
-            child: AspectRatio(
-              aspectRatio: 2.0 / 1.0,
-              child: Stack(
+            child:  Stack(
                 children: <Widget>[
                   Container(
                     child: CachedNetworkImage(
@@ -59,7 +57,7 @@ class SlideViewState extends State<SlideView>
                     child: new Container(
                       width: MediaQuery.of(context).size.width,
                       color: Color(0x44000000),
-                      padding: EdgeInsets.all(5.0),
+                      padding: EdgeInsets.all(8.0),
                       child: Text(item['title'],
                           style:
                               TextStyle(color: Colors.white, fontSize: 14.0)),
@@ -67,7 +65,7 @@ class SlideViewState extends State<SlideView>
                   ),
                 ],
               ),
-            ));
+            );
       }));
     }
     return new TabBarView(

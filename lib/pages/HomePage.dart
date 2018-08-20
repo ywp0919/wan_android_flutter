@@ -4,6 +4,7 @@ import 'package:WanAndroid/constant/Urls.dart';
 import 'package:WanAndroid/widget/SlideView.dart';
 import 'dart:convert';
 import 'dart:async';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -97,10 +98,17 @@ class HomePageState extends State<HomePage> {
     var item = _articleData[index - 1];
     // 其他的是列表的数据了。 这样写的好难看，看来得把代码多的这些部分移动到另一个文件去写了。
     return Card(
+      margin: EdgeInsets.all(8.0),
+      elevation: 2.0,
       // 水波
       child: InkWell(
         onTap: () {
           /// 点击事件
+          Fluttertoast.showToast(
+              msg: "点击了${item["title"]}",
+              gravity: ToastGravity.CENTER,
+              bgcolor: "#99000000",
+              textcolor: '#ffffff');
         },
         child: Padding(
           padding: const EdgeInsets.all(12.0),
