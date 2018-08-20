@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:WanAndroid/pages/http/HttpUtils.dart';
-import 'package:WanAndroid/pages/constant/Urls.dart';
+import 'package:WanAndroid/http/HttpUtils.dart';
+import 'package:WanAndroid/constant/Urls.dart';
+import 'package:WanAndroid/widget/SlideView.dart';
 import 'dart:convert';
+import 'dart:async';
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,11 +11,16 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
+  /// 列表用的滑动监听控制器。这里可以点进去看看它里面有哪些参数和方法。
+  ScrollController _scrollController = ScrollController();
+
   /// 给Snack用的。
   final GlobalKey<ScaffoldState> _scaffoldState = GlobalKey();
 
   /// banner的数据。
   var _bannerData;
+
+  SlideView _slideView;
 
   /// 获取到的文章列表数据集合。给ListView构建Item时使用。
   List _articleData = List();
@@ -24,35 +31,68 @@ class HomePageState extends State<HomePage> {
   /// 当前的页面，这个接口是从0开始的。
   var _curPager = 0;
 
+  /// 标志当前在请求中。
+  var _isRequesting = false;
+
+  /// 下拉刷新动作，这里需要看下文档
+  Future<Null> _refresh() async {
+    getBannerData();
+    getArticleData(false);
+    return null;
+  }
+
   @override
   void initState() {
+    // 加载更多
+    _scrollController.addListener(() {
+      if (_scrollController.position.maxScrollExtent ==
+              _scrollController.position.pixels &&
+          _articleData.length < _totalCount &&
+          !_isRequesting) {
+        // 这个时候触发加载更多
+        getArticleData(true);
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
     // 获取文章列表数据。
     getArticleData(false);
     // 获取banner数据。
     getBannerData();
-    super.initState();
+    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
         key: _scaffoldState,
-        body: RefreshIndicator(
-            child: ListView.builder(
-              itemBuilder: (context, index) => getListViewItemWidget(index),
-              itemCount: _articleData.length + 1,
-            ),
-            onRefresh: () {
-              getBannerData();
-              getArticleData(false);
-              return null;
-            }),
+        body: _articleData.length == 0
+            ? Center(
+                child: CircularProgressIndicator(
+                  valueColor:
+                      AlwaysStoppedAnimation(Theme.of(context).primaryColor),
+                ),
+              )
+            : RefreshIndicator(
+                child: ListView.builder(
+                  itemBuilder: (context, index) => getListViewItemWidget(index),
+                  itemCount: _articleData.length + 1,
+                  controller: _scrollController,
+                ),
+                onRefresh: _refresh),
       );
 
   /// 构建 item
   getListViewItemWidget(int index) {
     if (index == 0) {
       // 这个是banner
-      return Text("banner先不写");
+      return Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.width / 2,
+        child: _slideView,
+      );
     }
     var item = _articleData[index - 1];
     // 其他的是列表的数据了。 这样写的好难看，看来得把代码多的这些部分移动到另一个文件去写了。
@@ -92,11 +132,11 @@ class HomePageState extends State<HomePage> {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                       // 设置支持软换行的
-                      child: Text.rich(
-                        TextSpan(text: item["title"]),
+                      child: Text(
+                        item["title"],
                         softWrap: true,
-                        textAlign: TextAlign.start,
-                        style: TextStyle(color: Colors.black, fontSize: 18.0),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ),
@@ -144,9 +184,12 @@ class HomePageState extends State<HomePage> {
       _curPager = 0;
     }
     // 拼接url
-    var articleUrl = "${Urls.BASE_URL}${Urls.ARTICLE_LIST}$_curPager/json";
-    // 开始请求
+    var articleUrl = "${Urls.ARTICLE_LIST}$_curPager/json";
+    // 开始请求  来一个请求中的值吧。
+    _isRequesting = true;
     HttpUtils.get(articleUrl).then((response) {
+      // 请求完成后设置这个值的状态
+      _isRequesting = false;
       // 拿到结果后解析数据吧。
       print(response);
       if (response != null && response.isNotEmpty) {
@@ -157,6 +200,7 @@ class HomePageState extends State<HomePage> {
         if (data != null && resultMap["errorCode"] == 0) {
           // 要使状态发生改变
           setState(() {
+            /// 这些是文章列表的数据
             // 总数
             _totalCount = data["total"];
             // 要加的列表数据
@@ -164,6 +208,11 @@ class HomePageState extends State<HomePage> {
             // 这个时候mPager++
             _curPager++;
           });
+          // 如果是加载成功再提示一下吧。
+          if (isLoadMore) {
+            _scaffoldState.currentState.showSnackBar(
+                SnackBar(content: Text("新增了${data["datas"].length}条数据")));
+          }
         } else {
           // 弹出提示
 //          _scaffoldState.currentState
@@ -174,5 +223,21 @@ class HomePageState extends State<HomePage> {
   }
 
   /// 获取banner数据
-  void getBannerData() {}
+  void getBannerData() {
+    // http://www.wanandroid.com/banner/json
+    HttpUtils.get(Urls.HOME_BANNER_DATA).then((response) {
+      print(response);
+      if (response != null && response.isNotEmpty) {
+        // 这里用到dart:convert这个转换库
+        Map<String, dynamic> resultMap = jsonDecode(response);
+        var data = resultMap["data"];
+        if (data != null && resultMap["errorCode"] == 0) {
+          setState(() {
+            _bannerData = data;
+            _slideView = SlideView(_bannerData);
+          });
+        }
+      }
+    });
+  }
 }

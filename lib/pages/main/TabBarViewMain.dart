@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:WanAndroid/pages/home/HomePage.dart';
-import 'package:WanAndroid/pages/knowledge/KnowledgePage.dart';
+import 'package:WanAndroid/pages/HomePage.dart';
+import 'package:WanAndroid/pages/KnowledgePage.dart';
 import 'package:WanAndroid/pages/main/MainDrawerPage.dart';
 
 /// 这是一个点击TabItem进行切换显示的风格的主页。
