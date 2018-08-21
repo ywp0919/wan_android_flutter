@@ -15,7 +15,7 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="玩Android"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launch_image">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
