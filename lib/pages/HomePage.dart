@@ -5,6 +5,9 @@ import 'package:WanAndroid/widget/SlideView.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:WanAndroid/event/EventObject.dart';
+import 'package:WanAndroid/event/EventUtils.dart';
+import 'package:WanAndroid/pages/MyWebDetailPage.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -52,6 +55,22 @@ class HomePageState extends State<HomePage> {
           !_isRequesting) {
         // 这个时候触发加载更多
         getArticleData(true);
+      }
+    });
+
+    // 监听 登录 成功和失败的事件
+    EventUtils.appEvent.on<EventObject>().listen((event) {
+      // 登录成功 这里要检查下挂载状态
+      if (this.mounted) {
+        if (event.key == EventUtils.EVENT_LOGIN) {
+          // 登录成功  刷新下列表吧
+          getArticleData(false);
+          print("HomePage:EVENT_LOGIN");
+        } else if (event.key == EventUtils.EVENT_LOGOUT) {
+          // 退出登录  也刷新下列表吧  别想到其他的动作现在
+          getArticleData(false);
+          print("HomePage:EVENT_LOGOUT");
+        }
       }
     });
     super.initState();
@@ -104,11 +123,15 @@ class HomePageState extends State<HomePage> {
       child: InkWell(
         onTap: () {
           /// 点击事件
-          Fluttertoast.showToast(
-              msg: "点击了${item["title"]}",
-              gravity: ToastGravity.CENTER,
-              bgcolor: "#99000000",
-              textcolor: '#ffffff');
+//          Fluttertoast.showToast(
+//              msg: "点击了${item["title"]}",
+//              gravity: ToastGravity.CENTER,
+//              bgcolor: "#99000000",
+//              textcolor: '#ffffff');
+          // 打开web页面
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  MyWebDetailPage(item["title"], item["link"])));
         },
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -162,9 +185,11 @@ class HomePageState extends State<HomePage> {
                   // 小星星
                   GestureDetector(
                     onTap: () {
-                      Scaffold
-                          .of(context)
-                          .showSnackBar(SnackBar(content: Text("收藏我哦")));
+//                      Scaffold
+//                          .of(context)
+//                          .showSnackBar(SnackBar(content: Text("收藏我哦")));
+                      // 收藏或者取消收藏
+                      dealWithArticleCollectStatus(index - 1, item["collect"]);
                     },
                     child: Image.asset(
                       item["collect"]
@@ -188,18 +213,19 @@ class HomePageState extends State<HomePage> {
   void getArticleData(bool isLoadMore) {
     // 根据当前需要加载的页码来加载。这个页码在每次加载更多成功后+1就好了，下拉刷新的时候重置为0
     if (!isLoadMore) {
-      _articleData.clear();
       _curPager = 0;
     }
     // 拼接url
     var articleUrl = "${Urls.ARTICLE_LIST}$_curPager/json";
     // 开始请求  来一个请求中的值吧。
-    _isRequesting = true;
+    setState(() {
+      _isRequesting = true;
+    });
     HttpUtils.get(articleUrl).then((response) {
       // 请求完成后设置这个值的状态
       _isRequesting = false;
       // 拿到结果后解析数据吧。
-      print(response);
+//      print(response);
       if (response != null && response.isNotEmpty) {
         // 这里用到dart:convert这个转换库
         Map<String, dynamic> resultMap = jsonDecode(response);
@@ -212,7 +238,11 @@ class HomePageState extends State<HomePage> {
             // 总数
             _totalCount = data["total"];
             // 要加的列表数据
-            _articleData.addAll(data["datas"]);
+            if (!isLoadMore) {
+              _articleData = data["datas"];
+            } else {
+              _articleData.addAll(data["datas"]);
+            }
             // 这个时候mPager++
             _curPager++;
           });
@@ -223,8 +253,11 @@ class HomePageState extends State<HomePage> {
           }
         } else {
           // 弹出提示
-//          _scaffoldState.currentState
-//              .showSnackBar(SnackBar(content: Text("数据获取失败")));
+          Fluttertoast.showToast(
+              msg: "${resultMap["errorMsg"]}",
+              gravity: ToastGravity.CENTER,
+              bgcolor: "#99000000",
+              textcolor: '#ffffff');
         }
       }
     });
@@ -234,7 +267,7 @@ class HomePageState extends State<HomePage> {
   void getBannerData() {
     // http://www.wanandroid.com/banner/json
     HttpUtils.get(Urls.HOME_BANNER_DATA).then((response) {
-      print(response);
+//      print(response);
       if (response != null && response.isNotEmpty) {
         // 这里用到dart:convert这个转换库
         Map<String, dynamic> resultMap = jsonDecode(response);
@@ -245,6 +278,67 @@ class HomePageState extends State<HomePage> {
             _slideView = SlideView(_bannerData);
           });
         }
+      }
+    });
+  }
+
+  /// 处理收藏或者取消收藏文章
+  void dealWithArticleCollectStatus(int index, bool collectStatus) {
+    if (collectStatus) {
+      // 取消收藏
+      cancelCollectArt(index);
+    } else {
+      // 收藏
+      collectArt(index);
+    }
+  }
+
+  /// 取消收藏  这个返回都是一样看来是能把这两个整合起来减少代码量的，先这样吧，已经写了。
+  void cancelCollectArt(int index) {
+    var id = _articleData[index]["id"];
+    var url = Urls.ARTICLE_UN_COLLECT + "$id/json";
+    print(url);
+    HttpUtils.post(url).then((response) {
+//      print(response);
+      var suc = false;
+      if (response != null && response.isNotEmpty) {
+        Map<String, dynamic> resultMap = jsonDecode(response);
+        if (resultMap["errorCode"] == 0) {
+          setState(() {
+            _articleData[index]["collect"] = false;
+          });
+          suc = true;
+        }
+        Fluttertoast.showToast(
+            msg: suc ? "取消收藏" : "${resultMap["errorMsg"]}",
+            gravity: ToastGravity.CENTER,
+            bgcolor: "#99000000",
+            textcolor: '#ffffff');
+      }
+    });
+  }
+
+  /// 收藏
+  void collectArt(int index) {
+    var id = _articleData[index]["id"];
+    var url = Urls.ARTICLE_COLLECT_INNER + "$id/json";
+    print(url);
+    HttpUtils.post(url).then((response) {
+//      print(response);
+      var suc = false;
+      if (response != null && response.isNotEmpty) {
+        Map<String, dynamic> resultMap = jsonDecode(response);
+        if (resultMap["errorCode"] == 0) {
+          setState(() {
+            _articleData[index]["collect"] = true;
+          });
+          suc = true;
+        }
+        Fluttertoast.showToast(
+            msg: suc ? "收藏成功" : "${resultMap["errorMsg"]}",
+            gravity: ToastGravity.CENTER,
+            bgcolor: "#99000000",
+            textcolor: '#ffffff');
       }
     });
   }

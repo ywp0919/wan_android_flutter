@@ -5,6 +5,7 @@ import 'package:WanAndroid/pages/main/TabBarViewMain.dart';
 ///  一个是左右滑动的ViewPager样式的。
 ///  一个是点击ItemBar切换显示样式的。
 
+
 class MainApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => MainAppState();

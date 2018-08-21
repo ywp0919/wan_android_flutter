@@ -63,36 +63,32 @@ class TabBarViewMainState extends State<TabBarViewMain>
       controller: _tabController,
     );
 
-    return MaterialApp(
-      //主题设置
-      theme: ThemeData(primaryColor: Colors.green),
-      home: Scaffold(
-        // 顶部 appBar
-        appBar: AppBar(
-            // 顶部标题
-            title: Text(
-              _bottomTitles[_currentBottomIndex],
-              style: TextStyle(color: Colors.white),
-            ),
-            // icon的主题设置
-            iconTheme: IconThemeData(color: Colors.white)),
-        // 底部导航栏 CupertinoTabBar是iOS风格的，BottomNavigationBar是Android风格,这里我尽量都使用Android风格的控件。
+    return Scaffold(
+      // 顶部 appBar
+      appBar: AppBar(
+          // 顶部标题
+          title: Text(
+            _bottomTitles[_currentBottomIndex],
+            style: TextStyle(color: Colors.white),
+          ),
+          // icon的主题设置
+          iconTheme: IconThemeData(color: Colors.white)),
+      // 底部导航栏 CupertinoTabBar是iOS风格的，BottomNavigationBar是Android风格,这里我尽量都使用Android风格的控件。
 //          bottomNavigationBar: CupertinoTabBar(items: null),
-        bottomNavigationBar: BottomNavigationBar(
-          items: getBottomNavigationBarItems(),
-          currentIndex: _currentBottomIndex,
-          onTap: (index) {
-            setState(() {
-              _currentBottomIndex = index;
-              _tabController.index = index;
-            });
-          },
-        ),
-        // body 放 pager，主要是用来切换的这几个页面
-        body: _body,
-        // 侧滑页面
-        drawer: MainDrawerPage(),
+      bottomNavigationBar: BottomNavigationBar(
+        items: getBottomNavigationBarItems(),
+        currentIndex: _currentBottomIndex,
+        onTap: (index) {
+          setState(() {
+            _currentBottomIndex = index;
+            _tabController.index = index;
+          });
+        },
       ),
+      // body 放 pager，主要是用来切换的这几个页面
+      body: _body,
+      // 侧滑页面
+      drawer: MainDrawerPage(),
     );
   }
 

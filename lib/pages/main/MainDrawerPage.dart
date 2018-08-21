@@ -1,8 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:WanAndroid/pages/account/LoginOrRegisterPage.dart';
+import 'package:WanAndroid/constant/AppConstant.dart';
+import 'package:WanAndroid/dao/SpUtils.dart';
+import 'package:WanAndroid/constant/Config.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:WanAndroid/event/EventObject.dart';
+import 'package:WanAndroid/event/EventUtils.dart';
 
-/// 主页的侧滑页面  用一个没有状态的widget ，比用一个有状态的widget ui反应上快了很多。
-class MainDrawerPage extends StatelessWidget {
+/// 主页的侧滑页面  用一个没有状态的widget ，不知道是不是我幻觉了，视觉上比用一个有状态的widget ui反应上快了很多。
+class MainDrawerPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => MainDrawerPageState();
+}
+
+class MainDrawerPageState extends State<MainDrawerPage> {
+  var _appCookie = AppConstant.APP_COOKIE;
+
+  @override
+  void initState() {
+    // 监听 登录 成功和失败的事件
+    EventUtils.appEvent.on<EventObject>().listen((event) {
+      // 这里要检查下挂载状态
+      if (this.mounted) {
+        if (event.key == EventUtils.EVENT_LOGIN) {
+          // 登录成功
+          setState(() {
+            _appCookie = AppConstant.APP_COOKIE;
+          });
+          print("MainDrawerPage:EVENT_LOGIN");
+        }
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -24,17 +55,19 @@ class MainDrawerPage extends StatelessWidget {
                           width: 80.0,
                           height: 80.0,
                           child: CircleAvatar(
-                            child: Image.asset(
-                              "images/icon_head_default.png",
-                              width: 80.0,
-                              height: 80.0,
+                            backgroundImage: AssetImage(
+                              _appCookie == null || _appCookie.isEmpty
+                                  ? "images/icon_head_default.png"
+                                  : "images/icon_my_head.png",
                             ),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 12.0),
                           child: Text(
-                            "未登录",
+                            _appCookie == null || _appCookie.isEmpty
+                                ? "未登录"
+                                : "已登录",
                             style:
                                 TextStyle(color: Colors.white, fontSize: 18.0),
                           ),
@@ -49,16 +82,22 @@ class MainDrawerPage extends StatelessWidget {
                       alignment: Alignment.bottomRight,
                       child: FlatButton(
                         onPressed: () {
-                          // 前往登录 todo
+                          _appCookie == null || _appCookie.isEmpty
+                              ?
+                              // 前往登录
+                              goLogin(context)
+                              : exitLogin();
                         },
                         child: Text(
-                          "前往登录",
+                          _appCookie == null || _appCookie.isEmpty
+                              ? "前往登录"
+                              : "退出登录",
                           style: TextStyle(fontSize: 14.0, color: Colors.white),
                         ),
                         color: Colors.transparent,
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -70,13 +109,25 @@ class MainDrawerPage extends StatelessWidget {
                   ListTile(
                     title: Text("我喜欢的"),
                     trailing: Icon(Icons.navigate_next),
-                    onTap: () {},
+                    onTap: () {
+                      Fluttertoast.showToast(
+                          msg: "我喜欢的还不知道在哪呢？",
+                          gravity: ToastGravity.CENTER,
+                          bgcolor: "#99000000",
+                          textcolor: '#ffffff');
+                    },
                   ),
                   Divider(),
                   ListTile(
                     title: Text("关于"),
                     trailing: Icon(Icons.navigate_next),
-                    onTap: () {},
+                    onTap: () {
+                      Fluttertoast.showToast(
+                          msg: "关于我们~们~们~",
+                          gravity: ToastGravity.CENTER,
+                          bgcolor: "#99000000",
+                          textcolor: '#ffffff');
+                    },
                   ),
                   Divider(),
                 ],
@@ -86,5 +137,30 @@ class MainDrawerPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  /// 前往登录
+  goLogin(BuildContext context) {
+//    Navigator.of(context).pop();
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return LoginOrRegister();
+    }));
+  }
+
+  /// 退出登录
+  exitLogin() {
+    // 清除cookie信息。
+    SpUtils.removeString(Config.SP_COOKIE);
+    AppConstant.APP_COOKIE = "";
+    setState(() {
+      _appCookie = "";
+    });
+    Fluttertoast.showToast(
+        msg: "退出登录成功",
+        gravity: ToastGravity.CENTER,
+        bgcolor: "#99000000",
+        textcolor: '#ffffff');
+    // 发送退出登录的event
+    EventUtils.appEvent.fire(EventObject(EventUtils.EVENT_LOGOUT, ""));
   }
 }
