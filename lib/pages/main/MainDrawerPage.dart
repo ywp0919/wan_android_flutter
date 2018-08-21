@@ -125,6 +125,7 @@ class MainDrawerPageState extends State<MainDrawerPage> {
                     title: Text("关于"),
                     trailing: Icon(Icons.navigate_next),
                     onTap: () {
+                      /// 就一个关于页面，这里就不想写页面了，也不知道写啥样子的。
                       Fluttertoast.showToast(
                           msg: "关于我们~们~们~",
                           gravity: ToastGravity.CENTER,

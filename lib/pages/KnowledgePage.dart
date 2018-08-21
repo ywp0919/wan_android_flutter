@@ -4,6 +4,7 @@ import 'package:WanAndroid/constant/Urls.dart';
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:async';
+import 'package:WanAndroid/pages/KnowledgeChildPage.dart';
 
 class KnowledgePage extends StatefulWidget {
   @override
@@ -12,6 +13,7 @@ class KnowledgePage extends StatefulWidget {
 
 /// 这个就没有上拉加载更多了，只用做一个刷新的就行了。
 class KnowledgePageState extends State<KnowledgePage> {
+
   /// 体系数据
   var _treeData;
 
@@ -57,11 +59,12 @@ class KnowledgePageState extends State<KnowledgePage> {
       child: InkWell(
         onTap: () {
           /// 点击事件
-          Fluttertoast.showToast(
-              msg: "点击了${item["name"]}",
-              gravity: ToastGravity.CENTER,
-              bgcolor: "#99000000",
-              textcolor: '#ffffff');
+//          Fluttertoast.showToast(
+//              msg: "点击了${item["name"]}",
+//              gravity: ToastGravity.CENTER,
+//              bgcolor: "#99000000",
+//              textcolor: '#ffffff');
+        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>KnowledgeChildPage(item)));
         },
         child: Padding(
           padding: const EdgeInsets.all(12.0),
