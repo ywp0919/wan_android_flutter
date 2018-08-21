@@ -25,8 +25,6 @@ class MyWebDetailPageState extends State<MyWebDetailPage> {
     print(_url);
     return WebviewScaffold(
       url: _url,
-      withZoom: false,
-      withLocalStorage: true,
       withJavascript: true,
       appBar: AppBar(
         title: Text(

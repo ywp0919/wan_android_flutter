@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:WanAndroid/event/EventObject.dart';
 import 'package:WanAndroid/event/EventUtils.dart';
 import 'package:WanAndroid/pages/MyCollectArtPage.dart';
+import 'package:WanAndroid/pages/MyWebDetailPage.dart';
 
 /// 主页的侧滑页面  用一个没有状态的widget ，不知道是不是我幻觉了，视觉上比用一个有状态的widget ui反应上快了很多。
 class MainDrawerPage extends StatefulWidget {
@@ -39,7 +40,9 @@ class MainDrawerPageState extends State<MainDrawerPage> {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: Theme.of(context).primaryColor,
+        color: Theme
+            .of(context)
+            .primaryColor,
         child: Column(
           children: <Widget>[
             Container(
@@ -70,7 +73,7 @@ class MainDrawerPageState extends State<MainDrawerPage> {
                                 ? "未登录"
                                 : "已登录",
                             style:
-                                TextStyle(color: Colors.white, fontSize: 18.0),
+                            TextStyle(color: Colors.white, fontSize: 18.0),
                           ),
                         )
                       ],
@@ -85,9 +88,9 @@ class MainDrawerPageState extends State<MainDrawerPage> {
                         onPressed: () {
                           _appCookie == null || _appCookie.isEmpty
                               ?
-                              // 前往登录
-                              goLogin(context)
-                              : exitLogin();
+                          // 前往登录
+                          goLogin(context)
+                              : showExitLoginDialog(context);
                         },
                         child: Text(
                           _appCookie == null || _appCookie.isEmpty
@@ -104,39 +107,43 @@ class MainDrawerPageState extends State<MainDrawerPage> {
             ),
             Expanded(
                 child: Container(
-              color: Colors.white,
-              child: ListView(
-                children: <Widget>[
-                  ListTile(
-                    title: Text("我喜欢的"),
-                    trailing: Icon(Icons.navigate_next),
-                    onTap: () {
+                  color: Colors.white,
+                  child: ListView(
+                    children: <Widget>[
+                      ListTile(
+                        title: Text("我喜欢的"),
+                        trailing: Icon(Icons.navigate_next),
+                        onTap: () {
 //                      Fluttertoast.showToast(
 //                          msg: "我喜欢的还不知道在哪呢？",
 //                          gravity: ToastGravity.CENTER,
 //                          bgcolor: "#99000000",
 //                          textcolor: '#ffffff');
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => MyCollectArtPage()));
-                    },
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => MyCollectArtPage()));
+                        },
+                      ),
+                      Divider(),
+                      ListTile(
+                        title: Text("关于"),
+                        trailing: Icon(Icons.navigate_next),
+                        onTap: () {
+                          /// 就一个关于页面，也不知道写啥样子的，暂时先指向Wan Android的官网吧。
+//                          Fluttertoast.showToast(
+//                              msg: "关于我们~们~们~",
+//                              gravity: ToastGravity.CENTER,
+//                              bgcolor: "#99000000",
+//                              textcolor: '#ffffff');
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  MyWebDetailPage("Wan Android",
+                                      "http://www.wanandroid.com")));
+                        },
+                      ),
+                      Divider(),
+                    ],
                   ),
-                  Divider(),
-                  ListTile(
-                    title: Text("关于"),
-                    trailing: Icon(Icons.navigate_next),
-                    onTap: () {
-                      /// 就一个关于页面，这里就不想写页面了，也不知道写啥样子的。
-                      Fluttertoast.showToast(
-                          msg: "关于我们~们~们~",
-                          gravity: ToastGravity.CENTER,
-                          bgcolor: "#99000000",
-                          textcolor: '#ffffff');
-                    },
-                  ),
-                  Divider(),
-                ],
-              ),
-            ))
+                ))
           ],
         ),
       ),
@@ -166,5 +173,31 @@ class MainDrawerPageState extends State<MainDrawerPage> {
         textcolor: '#ffffff');
     // 发送退出登录的event
     EventUtils.appEvent.fire(EventObject(EventUtils.EVENT_LOGOUT, ""));
+  }
+
+  /// 显示一个dialog
+  showExitLoginDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) =>
+            AlertDialog(
+              title: Text("退出登录"),
+              content: Text("你确定要退出此次登录吗？"),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text("取消", style: TextStyle(color: Colors.grey),),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                FlatButton(
+                  child: Text("确定"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    exitLogin();
+                  },
+                ),
+              ],
+            ));
   }
 }
