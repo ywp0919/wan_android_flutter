@@ -16,7 +16,6 @@ class KnowledgeChildListPage extends StatefulWidget {
   State<StatefulWidget> createState() => KnowledgeChildListPageState(_id);
 }
 
-///  AutomaticKeepAliveClientMixin 为了不在切换时销毁这个widget
 class KnowledgeChildListPageState extends State<KnowledgeChildListPage>
     with AutomaticKeepAliveClientMixin {
   final _id;

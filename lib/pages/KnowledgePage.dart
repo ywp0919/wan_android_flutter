@@ -12,8 +12,8 @@ class KnowledgePage extends StatefulWidget {
 }
 
 /// 这个就没有上拉加载更多了，只用做一个刷新的就行了。
-class KnowledgePageState extends State<KnowledgePage> {
-
+class KnowledgePageState extends State<KnowledgePage>
+    with AutomaticKeepAliveClientMixin {
   /// 体系数据
   var _treeData;
 
@@ -21,6 +21,9 @@ class KnowledgePageState extends State<KnowledgePage> {
     getTreeData();
     return null;
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -64,7 +67,8 @@ class KnowledgePageState extends State<KnowledgePage> {
 //              gravity: ToastGravity.CENTER,
 //              bgcolor: "#99000000",
 //              textcolor: '#ffffff');
-        Navigator.of(context).push(MaterialPageRoute(builder: (context)=>KnowledgeChildPage(item)));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => KnowledgeChildPage(item)));
         },
         child: Padding(
           padding: const EdgeInsets.all(12.0),

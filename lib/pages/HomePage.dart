@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
   State<StatefulWidget> createState() => HomePageState();
 }
 
-class HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> with AutomaticKeepAliveClientMixin {
   /// 列表用的滑动监听控制器。这里可以点进去看看它里面有哪些参数和方法。
   ScrollController _scrollController = ScrollController();
 
@@ -44,6 +44,9 @@ class HomePageState extends State<HomePage> {
     getArticleData(false);
     return null;
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
