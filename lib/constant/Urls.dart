@@ -21,4 +21,7 @@ class Urls {
 
   /// 文章列表的取消收藏 http://www.wanandroid.com/lg/uncollect_originId/2333/json
   static const String ARTICLE_UN_COLLECT = BASE_URL + "lg/uncollect_originId/";
+
+  /// 喜欢的文章列表
+  static const String COLLECT_ARTICLE_LIST = BASE_URL + "lg/collect/list/";
 }

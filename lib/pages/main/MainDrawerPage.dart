@@ -6,6 +6,7 @@ import 'package:WanAndroid/constant/Config.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:WanAndroid/event/EventObject.dart';
 import 'package:WanAndroid/event/EventUtils.dart';
+import 'package:WanAndroid/pages/MyCollectArtPage.dart';
 
 /// 主页的侧滑页面  用一个没有状态的widget ，不知道是不是我幻觉了，视觉上比用一个有状态的widget ui反应上快了很多。
 class MainDrawerPage extends StatefulWidget {
@@ -110,11 +111,13 @@ class MainDrawerPageState extends State<MainDrawerPage> {
                     title: Text("我喜欢的"),
                     trailing: Icon(Icons.navigate_next),
                     onTap: () {
-                      Fluttertoast.showToast(
-                          msg: "我喜欢的还不知道在哪呢？",
-                          gravity: ToastGravity.CENTER,
-                          bgcolor: "#99000000",
-                          textcolor: '#ffffff');
+//                      Fluttertoast.showToast(
+//                          msg: "我喜欢的还不知道在哪呢？",
+//                          gravity: ToastGravity.CENTER,
+//                          bgcolor: "#99000000",
+//                          textcolor: '#ffffff');
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => MyCollectArtPage()));
                     },
                   ),
                   Divider(),

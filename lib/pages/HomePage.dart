@@ -73,16 +73,9 @@ class HomePageState extends State<HomePage> {
         }
       }
     });
-    super.initState();
-  }
 
-  @override
-  void didChangeDependencies() {
-    // 获取文章列表数据。
-    getArticleData(false);
-    // 获取banner数据。
-    getBannerData();
-    super.didChangeDependencies();
+    _refresh();
+    super.initState();
   }
 
   @override
@@ -310,10 +303,14 @@ class HomePageState extends State<HomePage> {
           suc = true;
         }
         Fluttertoast.showToast(
-            msg: suc ? "取消收藏" : "${resultMap["errorMsg"]}",
+            msg: suc ? "已取消收藏" : "${resultMap["errorMsg"]}",
             gravity: ToastGravity.CENTER,
             bgcolor: "#99000000",
             textcolor: '#ffffff');
+//        _scaffoldState.currentState.showSnackBar(SnackBar(
+//            content: Text(
+//              suc ? "已取消收藏" : "${resultMap["errorMsg"]}",
+//            )));
       }
     });
   }
@@ -339,6 +336,10 @@ class HomePageState extends State<HomePage> {
             gravity: ToastGravity.CENTER,
             bgcolor: "#99000000",
             textcolor: '#ffffff');
+//        _scaffoldState.currentState.showSnackBar(SnackBar(
+//            content: Text(
+//              suc ? "收藏成功" : "${resultMap["errorMsg"]}",
+//            )));
       }
     });
   }
