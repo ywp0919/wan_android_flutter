@@ -14,7 +14,7 @@ Wan安卓  App
 
 [官方Flutter文档地址](https://flutter.io/)
 
-[中方Flutter文档地址](https://flutterchina.club)
+[中文Flutter文档地址](https://flutterchina.club)
 
 
 这个是我用来找一些flutter plugin的地址（这是个好东西。）
@@ -56,11 +56,9 @@ Wan安卓  App
 ![](mdFile/pic_display_1.png)
 ![](mdFile/pic_display_2.png)
 ![](mdFile/pic_display_3.png)
-
 ![](mdFile/pic_display_4.png)
 ![](mdFile/pic_display_5.png)
 ![](mdFile/pic_display_6.png)
-
 ![](mdFile/pic_display_7.png)
 ![](mdFile/pic_display_8.png)
 ![](mdFile/pic_display_9.png)
