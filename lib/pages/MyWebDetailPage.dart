@@ -31,6 +31,11 @@ class MyWebDetailPageState extends State<MyWebDetailPage> {
           _title,
           style: TextStyle(color: Colors.white),
         ),
+        actions: <Widget>[
+          // 分享功能，现在还不清楚分享什么东西比较好。
+//          IconButton(icon: Icon(Icons.share), onPressed: () {}),
+        ],
+        iconTheme: IconThemeData(color: Colors.white),
       ),
     );
   }

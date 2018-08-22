@@ -27,4 +27,7 @@ class Urls {
 
   /// 知识体系下的文章
   static const String KNOWLEDGE_PROJECT_LIST = BASE_URL + "article/list/";
+
+  /// 搜索文章 http://www.wanandroid.com/article/query/0/json   post  参数 k 为关键字
+  static const String SEARCH_ARTICLE_LIST = BASE_URL + "article/query/";
 }

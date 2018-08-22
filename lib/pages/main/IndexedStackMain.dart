@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:WanAndroid/pages/HomePage.dart';
 import 'package:WanAndroid/pages/KnowledgePage.dart';
 import 'package:WanAndroid/pages/main/MainDrawerPage.dart';
+import 'package:WanAndroid/pages/SearchArticlePage.dart';
 
 /// 这是一个点击TabItem进行切换显示的风格的主页。
 class IndexedStackMain extends StatefulWidget {
@@ -52,6 +53,16 @@ class IndexedStackMainState extends State<IndexedStackMain> {
             _bottomTitles[_currentBottomIndex],
             style: TextStyle(color: Colors.white),
           ),
+          actions: <Widget>[
+            // 搜索，这里后面看还要不要加什么功能放在上面不？现在有些东西怎么放也没有思路
+            IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () {
+                  // 打开搜索页面
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => SearchArticlePage()));
+                }),
+          ],
           // icon的主题设置
           iconTheme: IconThemeData(color: Colors.white)),
       // 底部导航栏 CupertinoTabBar是iOS风格的，BottomNavigationBar是Android风格,这里我尽量都使用Android风格的控件。

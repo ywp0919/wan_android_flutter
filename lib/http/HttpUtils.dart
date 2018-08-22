@@ -35,6 +35,8 @@ class HttpUtils {
     var headMap = Map<String, String>();
     headMap["Cookie"] = AppConstant.APP_COOKIE;
 //    print(headMap["Cookie"]);
+    print(url);
+
     var response = await http.post(url, body: params, headers: headMap);
     // 这里需要保存cookie的话，。
     var cookie = response.headers['set-cookie'];
