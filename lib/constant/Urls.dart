@@ -25,6 +25,6 @@ class Urls {
   /// 喜欢的文章列表
   static const String COLLECT_ARTICLE_LIST = BASE_URL + "lg/collect/list/";
 
-  /// 某一个分类下项目列表数据，分页展示 project/list/1/json?cid=294
-  static const String KNOWLEDGE_PROJECT_LIST = BASE_URL + "project/list/";
+  /// 知识体系下的文章
+  static const String KNOWLEDGE_PROJECT_LIST = BASE_URL + "article/list/";
 }

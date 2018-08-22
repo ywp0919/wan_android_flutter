@@ -34,8 +34,8 @@ class KnowledgeChildListPageState extends State<KnowledgeChildListPage>
   /// 文章总条数，用来做加载更多的判断用的。
   var _totalCount;
 
-  /// 当前的页面，这个接口是从1开始的。
-  var _curPager = 1;
+  /// 当前的页面，这个接口是从0开始的。
+  var _curPager = 0;
 
   /// 标志当前在请求中。
   var _isRequesting = false;
@@ -186,7 +186,7 @@ class KnowledgeChildListPageState extends State<KnowledgeChildListPage>
   void getArticleData(bool isLoadMore) {
     // 根据当前需要加载的页码来加载。这个页码在每次加载更多成功后+1就好了，下拉刷新的时候重置为0
     if (!isLoadMore) {
-      _curPager = 1;
+      _curPager = 0;
     }
     // 拼接url
     var articleUrl = "${Urls.KNOWLEDGE_PROJECT_LIST}$_curPager/json";
