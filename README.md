@@ -2,7 +2,7 @@
 
 Wan Android Flutter application.
 
-Wan安卓  App
+WanAndroid  App
 # 简介
 最近看到各大技术论坛和平台都涌现了很多flutter相关的文章，
 特别是一些大厂的文章，为了跟上技术迭代的步伐，只好大概的看着官方文档学习了一下。
