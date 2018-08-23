@@ -19,8 +19,11 @@ class Urls {
   /// 收藏站内文章，还有一个收站外文章没懂是怎么用，先用着这一个了。
   static const String ARTICLE_COLLECT_INNER = BASE_URL + "lg/collect/";
 
-  /// 文章列表的取消收藏 http://www.wanandroid.com/lg/uncollect_originId/2333/json
+  /// 文章首页列表的取消收藏 http://www.wanandroid.com/lg/uncollect_originId/2333/json
   static const String ARTICLE_UN_COLLECT = BASE_URL + "lg/uncollect_originId/";
+
+  /// 我的收藏列表的文章的取消收藏 http://www.wanandroid.com/lg/uncollect/2805/json
+  static const String COLLECT_LIST_UN_COLLECT = BASE_URL + "lg/uncollect/";
 
   /// 喜欢的文章列表
   static const String COLLECT_ARTICLE_LIST = BASE_URL + "lg/collect/list/";

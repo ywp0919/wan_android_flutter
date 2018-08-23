@@ -227,10 +227,13 @@ class MyCollectArtPageState extends State<MyCollectArtPage> {
   /// 取消收藏  这个返回都是一样看来是能把这两个整合起来减少代码量的，先这样吧，已经写了。
   void cancelCollectArt(int index) {
     var id = _articleData[index]["id"];
-    var url = Urls.ARTICLE_UN_COLLECT + "$id/json";
+    var url = Urls.COLLECT_LIST_UN_COLLECT + "$id/json";
     print(url);
-    HttpUtils.post(url).then((response) {
-//      print(response);
+    Map<String, String> headers = Map<String, String>();
+    var originId = _articleData[index]["originId"];
+    headers["originId"] = "$originId";
+    HttpUtils.post(url,params: headers).then((response) {
+      print(response);
       var suc = false;
       if (response != null && response.isNotEmpty) {
         Map<String, dynamic> resultMap = jsonDecode(response);
