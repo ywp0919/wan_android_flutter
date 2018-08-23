@@ -33,4 +33,10 @@ class Urls {
 
   /// 搜索文章 http://www.wanandroid.com/article/query/0/json   post  参数 k 为关键字
   static const String SEARCH_ARTICLE_LIST = BASE_URL + "article/query/";
+
+  /// 搜索热词 http://www.wanandroid.com/hotkey/json
+  static const String HOT_SEARCH_LIST = BASE_URL + "hotkey/json";
+
+  /// 常用网站 http://www.wanandroid.com/friend/json
+  static const String HOT_WEBSITE_LIST = BASE_URL + "friend/json";
 }

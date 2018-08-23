@@ -4,6 +4,7 @@ import 'package:WanAndroid/pages/HomePage.dart';
 import 'package:WanAndroid/pages/KnowledgePage.dart';
 import 'package:WanAndroid/pages/main/MainDrawerPage.dart';
 import 'package:WanAndroid/pages/SearchArticlePage.dart';
+import 'package:WanAndroid/pages/HotPage.dart';
 
 /// 这是一个点击TabItem进行切换显示的风格的主页。
 class IndexedStackMain extends StatefulWidget {
@@ -13,18 +14,20 @@ class IndexedStackMain extends StatefulWidget {
 
 class IndexedStackMainState extends State<IndexedStackMain> {
   // 底部导航栏的文字 ， 给appBar 共用一下。
-  var _bottomTitles = ["首页", "知识体系"];
+  var _bottomTitles = ["首页", "知识体系", "热门"];
 
   // 底部导航栏未选中时的图片
   var _bottomIconNor = [
     "images/icon_bottom_main_nor.png",
-    "images/icon_bottom_knowledge_nor.png"
+    "images/icon_bottom_knowledge_nor.png",
+    "images/icon_bottom_hot_nor.png"
   ];
 
   // 底部导航栏选中时的图片
   var _bottomIconChecked = [
     "images/icon_bottom_main_checked.png",
-    "images/icon_bottom_knowledge_checked.png"
+    "images/icon_bottom_knowledge_checked.png",
+    "images/icon_bottom_hot_checked.png"
   ];
 
   // 底部导航栏当前选中的页面
@@ -41,7 +44,7 @@ class IndexedStackMainState extends State<IndexedStackMain> {
   @override
   Widget build(BuildContext context) {
     _body = IndexedStack(
-      children: <Widget>[HomePage(), KnowledgePage()],
+      children: <Widget>[HomePage(), KnowledgePage(), HotPage()],
       index: _currentBottomIndex,
     );
 

@@ -2,7 +2,8 @@
 
 Wan Android Flutter application.
 
-WanAndroid  App
+非常适合Flutter的入门学习。
+
 # 简介
 最近看到各大技术论坛和平台都涌现了很多flutter相关的文章，
 特别是一些大厂的文章，为了跟上技术迭代的步伐，只好大概的看着官方文档学习了一下。
@@ -39,11 +40,12 @@ WanAndroid  App
  - 知识体系下的文章
  - 收藏文章管理
  - 搜索文章
+ - 热门模块(包括热门搜索和热门网站)
 
 ### 待开发功能
- - 在首页加入热门模块(包括热门搜索和热门网站)
+ - 收藏网址管理功能
  - 加入Todo功能(这个会到最后才做)
- - 结构优化（之前为了体验Flutter的开发过程，没有特意去做太多的封装和方法的抽取，后续会开始做这方面的优化调整）
+ - 项目结构优化
 
 ### Android的安装包
 [直接电脑上点击下载地址](https://github.com/ywp0919/wan_android_flutter/raw/master/android/app/release/app-release.apk)
@@ -62,6 +64,8 @@ WanAndroid  App
 ![](mdFile/pic_display_7.png)
 ![](mdFile/pic_display_8.png)
 ![](mdFile/pic_display_9.png)
+![](mdFile/pic_display_10.png)
+![](mdFile/pic_display_11.png)
 
 
 

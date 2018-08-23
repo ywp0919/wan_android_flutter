@@ -8,19 +8,28 @@ import 'package:WanAndroid/widget/ArticleItemWidget.dart';
 
 /// 搜索文章页面。
 class SearchArticlePage extends StatefulWidget {
+  /// 这个是传进来的
+  final searchStr;
+
+  SearchArticlePage({this.searchStr});
+
   @override
-  State<StatefulWidget> createState() => SearchArticlePageState();
+  State<StatefulWidget> createState() => SearchArticlePageState(
+        searchStr: searchStr == null ? "" : searchStr,
+      );
 }
 
 class SearchArticlePageState extends State<SearchArticlePage> {
   /// 用来搜索的关键字
-  var _searchStr = "";
+  var searchStr = "";
+
+  SearchArticlePageState({this.searchStr});
 
   /// 用来控制清除输入icon的显不显示
   var _showClear = false;
 
   /// 输入框架controller
-  var _textFieldController = TextEditingController();
+  var _textFieldController;
 
   /// 列表用的滑动监听控制器。这里可以点进去看看它里面有哪些参数和方法。
   ScrollController _scrollController = ScrollController();
@@ -58,6 +67,14 @@ class SearchArticlePageState extends State<SearchArticlePage> {
         searchArticle(true);
       }
     });
+    // 如果这个时候传入了搜索词就触发搜索
+    if (searchStr == null || searchStr.isEmpty) {
+      _textFieldController = TextEditingController();
+    } else {
+      _textFieldController = TextEditingController(text: searchStr);
+      _refresh();
+      _showClear = true;
+    }
     super.initState();
   }
 
@@ -74,7 +91,7 @@ class SearchArticlePageState extends State<SearchArticlePage> {
             textInputAction: TextInputAction.search,
             // 点击键盘上的搜索触发。
             onSubmitted: (content) {
-              _searchStr = content;
+              searchStr = content;
               // 进行搜索
               searchArticle(false);
             },
@@ -134,7 +151,7 @@ class SearchArticlePageState extends State<SearchArticlePage> {
 
   /// 这里进行搜索， isLoadMore 代表是不是加载更多。
   void searchArticle(bool isLoadMore) {
-    if (_searchStr.isEmpty && !isLoadMore) {
+    if (searchStr.isEmpty && !isLoadMore) {
       ToastUtils.showToast("请输入搜索内容");
       return null;
     }
@@ -149,7 +166,7 @@ class SearchArticlePageState extends State<SearchArticlePage> {
     var searchUrl = "${Urls.SEARCH_ARTICLE_LIST}$_curPager/json";
     // 开始请求  来一个请求中的值吧。
     var params = Map<String, String>();
-    params["k"] = "$_searchStr";
+    params["k"] = "$searchStr";
     HttpUtils.post(searchUrl, params: params).then((response) {
       // 请求完成后设置这个值的状态
       print(response);

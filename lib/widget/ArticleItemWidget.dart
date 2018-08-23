@@ -196,7 +196,7 @@ class ArticleItemWidgetState extends State<ArticleItemWidget> {
   }
 
   /// 把文字 处理一下。这里的搜索的文字还需要做过滤处理才行。有<em class='highlight'></em>标签存在
-  /// 这里可以再考虑做一下高度。
+  /// 这里可以再考虑做一下高度。做完其他功能再完善这里。todo
   String handleString(String item) {
     if (item.contains("<em")) {
       return item

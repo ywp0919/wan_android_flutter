@@ -26,6 +26,7 @@ class MyWebDetailPageState extends State<MyWebDetailPage> {
     return WebviewScaffold(
       url: _url,
       withJavascript: true,
+      withZoom: true,
       appBar: AppBar(
         title: Text(
           _title,
