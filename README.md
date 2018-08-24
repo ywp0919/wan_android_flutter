@@ -2,7 +2,7 @@
 
 Wan Android Flutter application.
 
-非常适合Flutter的入门学习。
+非常适合Flutter的入门学习。（我开发时的flutter版本是0.5.7）
 
 # 简介
 最近看到各大技术论坛和平台都涌现了很多flutter相关的文章，
