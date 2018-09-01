@@ -13,7 +13,7 @@ class HotPage extends StatefulWidget {
   State<StatefulWidget> createState() => HotPageState();
 }
 
-class HotPageState extends State<HotPage> {
+class HotPageState extends State<HotPage> with AutomaticKeepAliveClientMixin {
   /// 变色用的
   var _textColors = [
     0xFF41BAE9,
@@ -34,6 +34,9 @@ class HotPageState extends State<HotPage> {
     getHotWebsite();
     return null;
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
