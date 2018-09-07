@@ -11,6 +11,8 @@ Wan Android Flutter application.
 
 项目是基于[Wan Android](http://www.wanandroid.com/index)提供的api来完成的，非常感谢鸿阳大神，自己也经常在这个网站上学习一些技术，做这个Flutter App的话也可以装在自己手机上平常用来看一些技术文章。
 
+[最近学习iOS开发去了，写了一个iOS版本的玩Android的Demo，喜欢的可以点星星鼓励一下哦](https://github.com/ywp0919/WanAndroid-iOS-APP)
+
 另外大部分flutter的学习参考是在这两个网站上学习的。
 
 [官方Flutter文档地址](https://flutter.io/)
